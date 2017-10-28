@@ -37,12 +37,7 @@ class MainActivityUI : AnkoComponent<MainActivity> {
 
             myButtonView()
 
-            imageView(android.R.drawable.ic_menu_manage).lparams {
-                width = wrapContent
-                height = wrapContent
-                gravity = Gravity.CENTER
-            }
-
+            myCanvasView()
 
         }.applyRecursively { }
 

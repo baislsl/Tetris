@@ -24,10 +24,6 @@ class ButtonView : GridLayout {
         rowCount = 3
         columnCount = 3
 
-        val rowSpec: GridLayout.Spec? = GridLayout.spec(2)
-        val colSpec: GridLayout.Spec? = GridLayout.spec(2)
-        val params = GridLayout.LayoutParams(rowSpec, colSpec)
-
         button("Left") {
             val row = 1
             val col = 0
