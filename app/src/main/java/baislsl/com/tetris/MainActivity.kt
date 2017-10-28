@@ -19,14 +19,32 @@ class MainActivity : AppCompatActivity() {
 }
 
 class MainActivityUI : AnkoComponent<MainActivity> {
+    private val style = { v: Any ->
+        when (v) {
+            is Button -> v.textSize = 26f
+        }
+    }
+
     override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
+
         verticalLayout(theme = R.style.AppTheme) {
-            imageView(android.R.drawable.ic_menu_manage).lparams{
+
+            val title = textView(R.string.title) {
+                textSize = 30f
+                gravity = Gravity.CENTER
+                textColor = Color.BLUE
+            }
+
+            myButtonView()
+
+            imageView(android.R.drawable.ic_menu_manage).lparams {
                 width = wrapContent
                 height = wrapContent
                 gravity = Gravity.CENTER
             }
-        }.applyRecursively {  }
+
+
+        }.applyRecursively { }
 
     }
 }
