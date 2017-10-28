@@ -25,12 +25,8 @@ class MainActivityUI : AnkoComponent<MainActivity> {
     override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
 
         verticalLayout(theme = R.style.AppTheme) {
-
-
-            myButtonView()
-
             myCanvasView()
-
+            myButtonView()
         }
 
     }

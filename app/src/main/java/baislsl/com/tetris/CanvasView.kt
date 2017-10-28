@@ -5,23 +5,41 @@ import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.ColorDrawable
+import android.support.annotation.ColorInt
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.view.ViewManager
+import android.widget.Button
+import android.widget.GridLayout
+import baislsl.com.tetris.control.TerisCanvas
+import org.jetbrains.anko.AnkoContext
+import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.button
 import org.jetbrains.anko.custom.ankoView
+import org.jetbrains.anko.padding
 
-class CanvasView : View {
+
+class CanvasView : GridLayout {
     private val TAG = "CanvasView"
-    private var xWidth: Int = 0
-    private var yHeight: Int = 0
+    private var xWidth: Int = 10
+    private var yHeight: Int = 10
     private val size: Int = 20
-    private var map: Array<Array<Paint>> = Array(size, { Array(size, { Paint() }) })
+    private var map: Array<Array<Button>> = Array(yHeight, { Array(xWidth, { Button(context) }) })
 
-    private fun init() {
-        for ((y, line) in map.withIndex()) {
-            for ((x, paint) in line.withIndex()) {
-                paint.color = if ((x + y) % 2 == 0) Color.WHITE else Color.BLACK
+    private fun init() = AnkoContext.createDelegate(this).apply {
+        rowCount = yHeight
+        columnCount = xWidth
+        padding = 1
+
+        map.forEachIndexed { y, arrayOfButtons ->
+            arrayOfButtons.forEachIndexed { x, mapxy ->
+                mapxy.backgroundColor = when ((x + y) % 2) {
+                    1 -> R.color.c1
+                    else -> R.color.c2
+                }
+                addView(mapxy, GridLayout.LayoutParams(GridLayout.spec(x), GridLayout.spec(y)))
             }
         }
     }
@@ -38,28 +56,15 @@ class CanvasView : View {
         init()
     }
 
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
-        super.onDraw(canvas)
+    private fun drawxy(x: Int, y: Int, @ColorInt color: Int): Boolean {
+        map[x][y].setBackgroundColor(color)
+        return true
+    }
 
-        val width = canvas!!.width
-        val height = canvas.height
-        xWidth = (width * 1.0 / size).toInt()
-        yHeight = (height * 1.0 / size).toInt()
-
-        Log.i(TAG, "canvas width = " + width)
-        Log.i(TAG, "canvas height = " + height)
-        Log.i(TAG, "x width = " + xWidth)
-        Log.i(TAG, "y height = " + yHeight)
-        Log.i(TAG, "block size = " + size.toString())
-
-        val sizeF = size.toFloat()
-        for ((y, line) in map.withIndex()) {
-            for ((x, paint) in line.withIndex()) {
-                canvas.drawRect(x * sizeF, y * sizeF, x * sizeF + sizeF, y * sizeF + sizeF,
-                        paint)
-            }
-        }
+    fun getTerisCanvasDrawer() = object : TerisCanvas {
+        override fun width() = xWidth
+        override fun height() = yHeight
+        override fun draw(x: Int, y: Int, @ColorInt color: Int) = drawxy(x, y, color)
     }
 }
 
