@@ -13,14 +13,8 @@ import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
 class ButtonView : GridLayout {
-    private val customStyle = { v: Any? ->
-        when (v) {
-            is Button -> v.textSize = 20f
-        }
-    }
 
     private fun init() = AnkoContext.createDelegate(this).apply {
-        applyRecursively { customStyle }
         rowCount = 3
         columnCount = 3
 
@@ -56,6 +50,7 @@ class ButtonView : GridLayout {
                 toast("button Down")
             }
         }
+
     }
 
     constructor(context: Context?) : super(context) {
