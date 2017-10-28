@@ -1,45 +1,40 @@
 package baislsl.com.tetris
 
 import android.content.Context
-import android.content.res.Resources
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.drawable.ColorDrawable
-import android.support.annotation.ColorInt
+import android.support.annotation.DrawableRes
 import android.util.AttributeSet
-import android.util.Log
-import android.view.View
 import android.view.ViewManager
-import android.widget.Button
 import android.widget.GridLayout
-import baislsl.com.tetris.control.TerisCanvas
-import org.jetbrains.anko.AnkoContext
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.button
+import android.widget.ImageButton
+import baislsl.com.tetris.control.TetrisCanvas
+import org.jetbrains.anko.*
 import org.jetbrains.anko.custom.ankoView
-import org.jetbrains.anko.padding
 
 
 class CanvasView : GridLayout {
     private val TAG = "CanvasView"
-    private var xWidth: Int = 10
-    private var yHeight: Int = 10
-    private val size: Int = 20
-    private var map: Array<Array<Button>> = Array(yHeight, { Array(xWidth, { Button(context) }) })
+    private var xCount: Int = 10
+    private var yCount: Int = 16
+    private var size: Int = 100
+    private var map: Array<Array<ImageButton>> = Array(yCount, { Array(xCount, { ImageButton(context) }) })
 
     private fun init() = AnkoContext.createDelegate(this).apply {
-        rowCount = yHeight
-        columnCount = xWidth
-        padding = 1
+        rowCount = yCount
+        columnCount = xCount
+        padding = 0
 
         map.forEachIndexed { y, arrayOfButtons ->
-            arrayOfButtons.forEachIndexed { x, mapxy ->
-                mapxy.backgroundColor = when ((x + y) % 2) {
-                    1 -> R.color.c1
-                    else -> R.color.c2
-                }
-                addView(mapxy, GridLayout.LayoutParams(GridLayout.spec(x), GridLayout.spec(y)))
+            arrayOfButtons.forEachIndexed { x, buttonxy ->
+                val params = GridLayout.LayoutParams(GridLayout.spec(y), GridLayout.spec(x))
+                params.height = size
+                params.width = size
+                addView(buttonxy, params)
+
+                drawxy(x, y, when ((x + y) % 2) {
+                    1 -> R.drawable.abc_ic_star_black_16dp
+                    else -> android.R.drawable.btn_default_small
+                })
+
             }
         }
     }
@@ -56,15 +51,15 @@ class CanvasView : GridLayout {
         init()
     }
 
-    private fun drawxy(x: Int, y: Int, @ColorInt color: Int): Boolean {
-        map[x][y].setBackgroundColor(color)
+    private fun drawxy(x: Int, y: Int, @DrawableRes drawable: Int): Boolean {
+        map[y][x].image = resources.getDrawable(drawable)
         return true
     }
 
-    fun getTerisCanvasDrawer() = object : TerisCanvas {
-        override fun width() = xWidth
-        override fun height() = yHeight
-        override fun draw(x: Int, y: Int, @ColorInt color: Int) = drawxy(x, y, color)
+    fun getTerisCanvasDrawer() = object : TetrisCanvas {
+        override fun width() = xCount
+        override fun height() = yCount
+        override fun draw(x: Int, y: Int, @DrawableRes drawable: Int) = drawxy(x, y, drawable)
     }
 }
 
