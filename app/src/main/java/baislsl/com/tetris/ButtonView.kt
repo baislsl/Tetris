@@ -8,49 +8,57 @@ import android.widget.Button
 import android.widget.GridLayout
 import android.widget.GridView
 import android.widget.Toast
+import baislsl.com.tetris.control.TetrisKeyBoard
 import org.jetbrains.anko.*
 import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
 class ButtonView : GridLayout {
+    private var leftBtn: Button = Button(context)
+    private var rightBtn: Button = Button(context)
+    private var rotateBtn: Button = Button(context)
+    private var speedUpBtn: Button = Button(context)
+    private var stopBtn: Button = Button(context)
+
+
+    fun getTetrisKeyBoard() = object : TetrisKeyBoard {
+        override fun leftButton() = leftBtn
+        override fun rightButton() = rightBtn
+        override fun rotateButton() = rotateBtn
+        override fun speedUpButton() = speedUpBtn
+        override fun stopButton() = stopBtn
+    }
 
     private fun init() = AnkoContext.createDelegate(this).apply {
         rowCount = 3
-        columnCount = 3
+        columnCount = 4
 
-        button("Left") {
+        leftBtn = button("Left") {
             val row = 1
             val col = 0
-            layoutParams =  GridLayout.LayoutParams(GridLayout.spec(row), GridLayout.spec(col))
-            onClick {
-                toast("button Left")
-            }
+            layoutParams = GridLayout.LayoutParams(GridLayout.spec(row), GridLayout.spec(col))
         }
-        button("Right") {
+        rightBtn = button("Right") {
             val row = 1
             val col = 2
-            layoutParams =  GridLayout.LayoutParams(GridLayout.spec(row), GridLayout.spec(col))
-            onClick {
-                toast("button Right")
-            }
+            layoutParams = GridLayout.LayoutParams(GridLayout.spec(row), GridLayout.spec(col))
         }
-        button("Top") {
+        rotateBtn = button("Rotate") {
             val row = 0
             val col = 1
-            layoutParams =  GridLayout.LayoutParams(GridLayout.spec(row), GridLayout.spec(col))
-            onClick {
-                toast("button Top")
-            }
+            layoutParams = GridLayout.LayoutParams(GridLayout.spec(row), GridLayout.spec(col))
         }
-        button("Down") {
+        speedUpBtn = button("Speed") {
             val row = 2
             val col = 1
-            layoutParams =  GridLayout.LayoutParams(GridLayout.spec(row), GridLayout.spec(col))
-            onClick {
-                toast("button Down")
-            }
+            layoutParams = GridLayout.LayoutParams(GridLayout.spec(row), GridLayout.spec(col))
         }
 
+        stopBtn = button("Stop") {
+            val row = 0
+            val col = 3
+            layoutParams = GridLayout.LayoutParams(GridLayout.spec(row), GridLayout.spec(col))
+        }
     }
 
     constructor(context: Context?) : super(context) {
@@ -69,4 +77,5 @@ class ButtonView : GridLayout {
 
 @Suppress("NOTHING_TO_INLINE")
 inline fun ViewManager.myButtonView(theme: Int = R.style.AppTheme) = myButtonView({}, theme)
+
 inline fun ViewManager.myButtonView(init: ButtonView.() -> Unit, theme: Int = 0) = ankoView(::ButtonView, theme, init)
