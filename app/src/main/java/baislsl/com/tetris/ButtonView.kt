@@ -14,11 +14,11 @@ import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
 class ButtonView : GridLayout {
-    private var leftBtn: Button = Button(context)
-    private var rightBtn: Button = Button(context)
-    private var rotateBtn: Button = Button(context)
-    private var speedUpBtn: Button = Button(context)
-    private var stopBtn: Button = Button(context)
+    private lateinit var leftBtn: Button
+    private lateinit var rightBtn: Button
+    private lateinit var rotateBtn: Button
+    private lateinit var speedUpBtn: Button
+    private lateinit var stopBtn: Button
 
 
     fun getTetrisKeyBoard() = object : TetrisKeyBoard {

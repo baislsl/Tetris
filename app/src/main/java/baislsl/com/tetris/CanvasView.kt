@@ -1,6 +1,7 @@
 package baislsl.com.tetris
 
 import android.content.Context
+import android.os.Handler
 import android.support.annotation.DrawableRes
 import android.util.AttributeSet
 import android.view.ViewManager
@@ -53,10 +54,11 @@ class CanvasView : GridLayout {
         return true
     }
 
-    fun getTerisCanvasDrawer() = object : TetrisCanvas {
+    fun getTetrisCanvasDrawer() = object : TetrisCanvas {
         override fun width() = xCount
         override fun height() = yCount
         override fun draw(x: Int, y: Int, @DrawableRes drawable: Int) = drawxy(x, y, drawable)
+        override fun getHandler(): Handler? = handler
     }
 }
 
