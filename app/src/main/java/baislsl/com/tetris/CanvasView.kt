@@ -30,10 +30,7 @@ class CanvasView : GridLayout {
                 params.width = size
                 addView(buttonxy, params)
 
-                drawxy(x, y, when ((x + y) % 2) {
-                    1 -> R.drawable.abc_ic_star_black_16dp
-                    else -> android.R.drawable.btn_default_small
-                })
+                drawxy(x, y, R.drawable.black)
 
             }
         }
