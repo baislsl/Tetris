@@ -62,6 +62,7 @@ class CanvasView : GridLayout {
     }
 }
 
+@Suppress("NOTHING_TO_INLINE")
 inline fun ViewManager.myCanvasView(theme: Int = R.style.AppTheme) = myCanvasView({}, theme)
 inline fun ViewManager.myCanvasView(init: CanvasView.() -> Unit, theme: Int = R.style.AppTheme)
         = ankoView(::CanvasView, theme, init)
