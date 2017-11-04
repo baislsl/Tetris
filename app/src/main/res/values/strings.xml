@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Tetris</string>
     <string name="title">Tetris</string>
+
+    <string name="hard">Hard</string>
+    <string name="medium">medium</string>
+    <string name="easy">easy</string>
+
 </resources>

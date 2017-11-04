@@ -9,17 +9,25 @@ import org.jetbrains.anko.toast
 import java.util.*
 
 
-open class ControlCenter(val canvas: TetrisCanvas, val keyBoard: TetrisKeyBoard, val context: Context) {
+open class ControlCenter(val canvas: TetrisCanvas,
+                         val keyBoard: TetrisKeyBoard,
+                         val context: Context,
+                         difficulty: Int) {
     private val TAG = "ControlCenter"
     private val width = canvas.width()
     private val height = canvas.height()
     private lateinit var timer: Timer
-    private var gap: Long = 500
     private val solid = R.drawable.white
     private val empty = R.drawable.black
     private var map: Array<Array<Int>> = Array(height, { Array(width, { empty }) })
     private var currentBlock: Block = Cube().adaptTo(canvas)
     private var isStop = false
+    private var gap: Long = when (difficulty) {
+        0 -> 300
+        1 -> 500
+        2 -> 900
+        else -> 500
+    }
 
 
     private fun Point.draw(@DrawableRes drawable: Int) {
@@ -41,9 +49,11 @@ open class ControlCenter(val canvas: TetrisCanvas, val keyBoard: TetrisKeyBoard,
 
     private fun move(points: List<Point>): Boolean {
         points.forEach { Log.i(TAG, "x=${it.x}, y=${it.y}, width=${width}, height=${height}") }
-        if (points.all { it.x in 0 until width
-                && it.y in 0 until height
-                && map[it.y][it.x] == empty }) {
+        if (points.all {
+            it.x in 0 until width
+                    && it.y in 0 until height
+                    && map[it.y][it.x] == empty
+        }) {
             canvas.getHandler()?.post { currentBlock.clear().transfer(points).draw() }
             return true
         }
